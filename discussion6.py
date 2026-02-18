@@ -123,14 +123,16 @@ class HorseRaces:
             EXAMPLE: {"Oguri Cap": ("Tenno Sho Fall", 16.6), "Mejiro McQueen": ("Tenno Sho Fall", 16.1)}
         '''
         
-        horse_pb = {}
-        
-        for horse_name in self.results_dict:
-            fastest_data = self.horse_fastest_race(horse_name)
-
-            horse_pb[horse_name] = fastest_data
-
-        return horse_pb
+        pb_dict = {}
+        for horse, races in self.results_dict.items():
+            best_race = None
+            best_time = 999.9
+            for r_name, r_time in races.items():
+                if r_time < best_time:
+                    best_time = r_time
+                    best_race = r_name
+            pb_dict[horse] = (best_race, best_time)
+            return pb_dict
 
 
 ###############################################################################
@@ -145,7 +147,17 @@ class HorseRaces:
             A dictionary with each horse and their average time.
             EXAMPLE: {'Gold Ship': 16.5, 'Daiwa Scarlet': 17.2}
         '''
-        pass
+        averages_dict = {}
+
+        for horse_name, races in self.results_dict.items():
+            times = races.values()
+        
+        if len(times) > 0:
+            avg_time = sum(times) / len(times)
+        else:
+            avg_time = 0.0
+        averages_dict[horse_name] = avg_time
+
 
 ###############################################################################
 ##### DO NOT MODIFY THE UNIT TESTS BELOW!
